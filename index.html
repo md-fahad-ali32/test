@@ -1,28 +1,65 @@
+
+<!-- Licensed under a BSD license. See license.html for license -->
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset=utf-8 />
-<title>Video</title>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Three.js - Textured Cube</title>
+    <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    #c {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+    </style>
+        <script src="https://threejs.org/build/three.js"></script>
 
-  <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-  <script src="http://vjs.zencdn.net/4.12/video.js"></script>
- <script src="https://github.com/videojs/videojs-contrib-media-sources/releases/download/v0.1.0/videojs-media-sources.js"></script>
-  <script src="https://github.com/videojs/videojs-contrib-hls/releases/download/v0.11.2/videojs.hls.min.js"></script>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <script type="module">
 
-</head>
-<body>
-  <h1>Video</h1>
+function main() {
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas,alpha:true});
+  renderer.setClearColor(0xffffff, 0);
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
+  var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  camera.position.z = 3;
 
-  <video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="268" 
-  data-setup='{}'>
-    <source src="http://iptvbd.jagobd.com:1931/boishakhi/somoyt000011226615544544.stream/chunks.m3u8" type='application/x-mpegURL'>
-  </video>
+  const scene = new THREE.Scene();
 
-  <script>
-  var player = videojs('my_video_1');
-  </script>
+  var geometry = new THREE.BoxGeometry( 2, 2, 2,2 );
 
+  const loader = new THREE.TextureLoader();
+
+  const material = new THREE.MeshBasicMaterial({
+    map: loader.load('eid.jpg'),
+  });
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+  
+  var animate = function () {
+	requestAnimationFrame( animate );
+
+	cube.rotation.x += 0.01;
+	cube.rotation.y += 0.01;
+
+	renderer.render( scene, camera );
+};
+
+animate();
+
+}
+
+main();
+</script>
 </body>
 </html>
 
-<!-- Replace current .m3u8 and check..current file has access issue-->
